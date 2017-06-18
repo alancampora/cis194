@@ -36,9 +36,13 @@ sumDigitsNumber = sum . toDigits
 eq0 :: Integer -> Bool
 eq0 = (== 0) 
 
-flippedMod :: Integer -> Integer
-flippedMod = flip mod
+flipLazy :: (a -> b -> c) -> (b -> a -> c) 
+flipLazy f = g 
+    where g x y = f y x 
+
+flippedMod :: Integer -> Integer -> Integer
+flippedMod = flipLazy mod
 
 validate :: Integer -> Bool
-validate creditCardNumber =  ( eq0 . (flippedMod 10 ) . sumDigits. doubleEveryOther . toDigits ) creditCardNumber
+validate  =  ( eq0 . (flippedMod 10) . sumDigits. doubleEveryOther . toDigits ) 
 

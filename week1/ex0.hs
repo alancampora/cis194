@@ -2,7 +2,7 @@
 decompose :: Integer -> [Integer]
 decompose number 
     | (<=) number 0  = []
-    | otherwise     = lastDigit number : (decompose . removeLastDigit ) number
+    | otherwise     = (decompose . removeLastDigit ) number ++ lastDigit number : []
 
 lastDigit :: Integer -> Integer
 lastDigit number = mod number 10
@@ -11,10 +11,10 @@ removeLastDigit :: Integer -> Integer
 removeLastDigit number = div ((-) number (lastDigit number)) 10 
 
 toDigitsRev :: Integer -> [Integer]
-toDigitsRev = decompose 
+toDigitsRev = reverse . toDigits 
 
 toDigits :: Integer -> [Integer]
-toDigits = reverse . toDigitsRev
+toDigits = decompose 
 
 {-EXERCISE TWO -}
 doubleEveryOther :: [Integer] -> [Integer]

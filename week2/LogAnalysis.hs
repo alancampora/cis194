@@ -10,25 +10,32 @@ import Log
 {-parseMessage "This is not in the right format"-}
 {-== Unknown "This is not in the right format"-}
 
+parseString:: String -> LogMessage
 parseString = (instanceLog . splittedWords)
-splittedWords = words 
+    where splittedWords = words 
 
+instanceLog:: [String] -> LogMessage
 instanceLog (typeLog:rest) 
     | (==) typeLog "E" = errorLog rest
     | (==) typeLog "I" = infoLog rest
     | (==) typeLog "W" = warningLog rest
     | otherwise = Unknown (getMessage (typeLog:[]++rest))
-    
+ 
+errorLog:: [String] -> LogMessage
 errorLog (errorNumber:timeStamp:rest) = 
    LogMessage (Error (toInt errorNumber)) (toInt timeStamp) (getMessage rest) 
  
+infoLog:: [String] -> LogMessage
 infoLog (timeStamp:rest) = 
    LogMessage Info (toInt timeStamp) (getMessage rest)
 
+warningLog:: [String] -> LogMessage
 warningLog (timeStamp:rest) = 
    LogMessage Warning (toInt timeStamp) (getMessage rest)
 
+getMessage:: [String] -> String
 getMessage (x:[]) = x
 getMessage (x:xs) = x ++ " " ++ getMessage xs
 
+toInt:: String -> Int
 toInt str = read str

@@ -1,6 +1,8 @@
 module LogAnalysis where 
 import Log 
 
+{-EXERCISE ONE -}
+
 {-parseMessage "E 2 562 help help"-}
 {-== LogMessage (Error 2) 562 "help help"-}
 
@@ -9,6 +11,13 @@ import Log
 
 {-parseMessage "This is not in the right format"-}
 {-== Unknown "This is not in the right format"-}
+
+parse:: String -> [LogMessage]
+parse string = linesToLogMessage logs 
+    where logs = lines string
+
+linesToLogMessage:: [String] -> [LogMessage]
+linesToLogMessage (line:rest) = parseString line : linesToLogMessage rest
 
 parseString:: String -> LogMessage
 parseString = (instanceLog . splittedWords)
@@ -34,6 +43,7 @@ warningLog (timeStamp:rest) =
    LogMessage Warning (toInt timeStamp) (getMessage rest)
 
 getMessage:: [String] -> String
+getMessage [] = ""
 getMessage (x:[]) = x
 getMessage (x:xs) = x ++ " " ++ getMessage xs
 

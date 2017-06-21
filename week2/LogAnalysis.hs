@@ -49,3 +49,20 @@ getMessage (x:xs) = x ++ " " ++ getMessage xs
 
 toInt:: String -> Int
 toInt str = read str
+
+{-EXERCISE TWO-}
+
+getTimeStamp:: LogMessage -> Int
+getTimeStamp (LogMessage (Error number) time message) = time 
+getTimeStamp (LogMessage Info time message) =  time 
+getTimeStamp (LogMessage Warning time message) = time 
+
+
+insert:: LogMessage -> MessageTree -> MessageTree
+insert (Unknown error) tree = tree
+insert logMessage Leaf = Node Leaf logMessage Leaf
+insert logMessage (Node left value right) 
+     | (<) (getTimeStamp logMessage) (getTimeStamp value) = Node (insert logMessage left) value right
+     | otherwise =  Node left value (insert logMessage right)
+
+

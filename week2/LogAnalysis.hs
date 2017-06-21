@@ -65,4 +65,9 @@ insert logMessage (Node left value right)
      | (<) (getTimeStamp logMessage) (getTimeStamp value) = Node (insert logMessage left) value right
      | otherwise =  Node left value (insert logMessage right)
 
-
+{-EXERCISE THREE-}
+{-build:: [LogMessage] -> MessageTree-}
+build messages  = building messages tree 
+    where tree = Leaf
+building [] tree = tree 
+building (x:xs) tree = building xs (insert x tree)

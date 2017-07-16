@@ -84,3 +84,29 @@ inOrder (Node messageTreeLeft logMessage messageTreeRight) =
 {-testing function inOrder-}
 createOrderedTree:: [String] -> [LogMessage]
 createOrderedTree = inOrder . build . linesToLogMessage
+
+{-EXCERCISE FIVE-}
+whatWentWrong:: [LogMessage] -> [String]
+whatWentWrong = getMessagesFromLogs .filterSeverity50 .buildInOrder
+
+getMessagesFromLogs:: [LogMessage] -> [String]
+getMessagesFromLogs [] = []
+getMessagesFromLogs (LogMessage _ _ message:xs) = message : getMessagesFromLogs xs 
+
+buildInOrder:: [LogMessage] -> [LogMessage]
+buildInOrder = inOrder . build
+
+filterSeverity50:: [LogMessage] -> [LogMessage]
+filterSeverity50 [] = [] 
+filterSeverity50 (LogMessage messageType time string:xs) 
+    | isSeverityBigger50 messageType && isErrorMessage messageType = (LogMessage messageType time string): filterSeverity50 xs 
+    | otherwise = filterSeverity50 xs
+        
+
+isSeverityBigger50:: MessageType -> Bool
+isSeverityBigger50 (Error number) = number > 50 
+isSeverityBigger50 _ = False
+
+isErrorMessage:: MessageType -> Bool
+isErrorMessage (Error number) = True
+isErrorMessage _ = False

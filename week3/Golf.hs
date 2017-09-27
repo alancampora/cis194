@@ -25,3 +25,29 @@ localMaxima (x:y:z:xs)
 
 isMax::Int ->Int -> Int -> Bool
 isMax x y z =  x > z && x > y 
+
+{------- EX 3 -------}
+{-histogram:: [Int] -> String-}
+histogram list = foldl intoArray [newList] list 
+
+{- [1,4,5,6,7,1] -}
+{-[[1,0,0,1,1,1,1,0,0,0],[1,0,0,0,0,0,0,0,0,0]]-}
+intoArray:: [[Int]] -> Int -> [[Int]]
+intoArray acum position 
+    | length filteredList == length acum  = acum ++ [(insertItemAt position newList)]
+        {-lo tengo que insertar en el medio eso es lo que falla-}
+    | length filteredList >= 1 && length filteredList < length acum = [(insertItemAt position (listAt (length filteredList) acum))]
+    | otherwise = [insertItemAt position (last acum)]
+    where filteredList = filter (founded position) acum
+          founded position list = (==) 1 (listAt position list)
+
+
+listAt :: Int -> [a] -> a
+listAt position  = last . take position
+
+newList = [0,0,0,0,0,0,0,0,0,0]
+
+insertItemAt:: Int -> [Int] -> [Int]
+insertItemAt position = aux . splitAt position   
+    where aux (xs,ys) =  take (length xs - 1) xs ++ [1] ++ ys
+
